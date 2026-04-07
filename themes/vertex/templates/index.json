@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-3d",
+      "settings": {
+        "heading": "Touch. Feel.\nExperience.",
+        "eyebrow": "Next-Gen 3D Commerce",
+        "subheading": "Let your customers explore products in stunning 3D. Rotate, zoom, and interact — all from your browser.",
+        "cta_text": "Explore in 3D",
+        "cta_link": "/collections/all",
+        "full_height": true
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Explore in 3D",
+        "subheading": "Interactive product models you can rotate and inspect from every angle.",
+        "products_to_show": 6,
+        "columns": 3
+      }
+    },
+    "immersive-storytelling": {
+      "type": "immersive-storytelling",
+      "settings": {
+        "layout": "split",
+        "eyebrow": "Why Vertex",
+        "heading": "Products That Leap Off The Screen",
+        "text": "Traditional product photos can't capture the full story. Vertex gives your customers a real sense of scale, texture, and form — reducing returns and boosting conversion."
+      }
+    }
+  },
+  "order": ["hero", "featured-collection", "immersive-storytelling"]
+}

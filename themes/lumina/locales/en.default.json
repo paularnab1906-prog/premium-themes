@@ -1,0 +1,34 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_text": "Skip to content"
+    },
+    "close": "Close",
+    "link": {
+      "cover_image": "Cover image"
+    }
+  },
+  "sections": {
+    "header": {
+      "announcement": "Announcement"
+    },
+    "cart": {
+      "cart_error": "There's an error updating your cart. Please try again.",
+      "cart_quantity_error_html": "You can only add [quantity] of this item to your cart."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable"
+    },
+    "price": {
+      "sale_price": "Sale price",
+      "regular_price": "Regular price"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to content"
+  }
+}

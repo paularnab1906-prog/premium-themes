@@ -1,0 +1,24 @@
+{
+  "current": {
+    "colors_solid_button_labels": "#ffffff",
+    "colors_accent": "#7c3aed",
+    "colors_accent_secondary": "#0ea5e9",
+    "colors_text": "#e8e8f0",
+    "colors_background_1": "#0a0a14",
+    "colors_background_2": "#111120",
+    "colors_lines": "rgba(255,255,255,0.1)",
+    "type_header_font": "space_grotesk",
+    "type_body_font": "dm_sans",
+    "type_base_size": 16,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    }
+  }
+}

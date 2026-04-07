@@ -1,0 +1,427 @@
+{%- liquid
+  assign model_3d_url = section.settings.model_3d_url
+  assign image = section.settings.image
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign cta_text = section.settings.cta_text
+  assign cta_link = section.settings.cta_link
+  assign full_height = section.settings.full_height | default: true
+  assign glow_color = settings.color_accent | default: '#7c3aed'
+-%}
+
+<section class="hero-3d{% if full_height %} hero-3d--full{% endif %}" data-section-id="{{ section.id }}">
+  <div class="hero-3d__bg-grid" aria-hidden="true"></div>
+
+  {%- if model_3d_url != blank -%}
+    <div class="hero-3d__model-wrap">
+      <model-viewer
+        src="{{ model_3d_url }}"
+        alt="{{ heading | escape }}"
+        auto-rotate
+        camera-controls
+        shadow-intensity="1"
+        shadow-softness="1"
+        environment-image="neutral"
+        exposure="1"
+        class="hero-3d__model"
+        data-shopify-model
+      >
+        <div class="hero-3d__model-ui" slot="progress-bar">
+          <div class="hero-3d__progress-bar">
+            <div class="hero-3d__progress-fill"></div>
+          </div>
+        </div>
+        <button class="hero-3d__ar-btn" slot="ar-button">
+          {% render 'icon-ar' %}
+          <span>View in AR</span>
+        </button>
+      </model-viewer>
+    </div>
+  {%- elsif image != blank -%}
+    <div class="hero-3d__image-wrap">
+      <img
+        src="{{ image | image_url: width: 1920 }}"
+        alt="{{ image.alt | escape }}"
+        class="hero-3d__image"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+
+  <div class="hero-3d__content glass" data-animate data-animate-fade>
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="hero-3d__eyebrow">
+        <span class="hero-3d__eyebrow-dot"></span>
+        {{ section.settings.eyebrow }}
+      </div>
+    {%- endif -%}
+
+    {%- if heading != blank -%}
+      <h1 class="hero-3d__heading">
+        {{ heading | newline_to_br }}
+      </h1>
+    {%- endif -%}
+
+    {%- if subheading != blank -%}
+      <p class="hero-3d__subheading">{{ subheading }}</p>
+    {%- endif -%}
+
+    {%- if cta_text != blank -%}
+      <div class="hero-3d__cta-group">
+        {%- if cta_link != blank -%}
+          <a href="{{ cta_link }}" class="btn-3d btn-3d--primary">
+            {{ cta_text }}
+            {% render 'icon-arrow-right' %}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_cta_text != blank -%}
+          <a href="{{ section.settings.secondary_cta_link }}" class="btn-3d btn-3d--ghost">
+            {{ section.settings.secondary_cta_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_scroll -%}
+    <div class="hero-3d__scroll-hint" aria-hidden="true">
+      <div class="scroll-hint__mouse">
+        <div class="scroll-hint__wheel"></div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<style>
+  .hero-3d {
+    position: relative;
+    min-height: 600px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 4rem 3rem;
+  }
+
+  .hero-3d--full {
+    min-height: 100vh;
+  }
+
+  .hero-3d__bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.4;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 80%);
+    pointer-events: none;
+  }
+
+  .hero-3d__model-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 5%;
+    pointer-events: none;
+  }
+
+  .hero-3d__model {
+    width: 60%;
+    max-width: 700px;
+    height: 80vh;
+    background: transparent;
+    --poster-color: transparent;
+  }
+
+  .hero-3d__model-ui {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .hero-3d__progress-bar {
+    width: 200px;
+    height: 2px;
+    background: var(--color-border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .hero-3d__progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-secondary));
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  .hero-3d__ar-btn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .hero-3d__ar-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .hero-3d__image-wrap {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-3d__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+    filter: blur(2px);
+  }
+
+  .hero-3d__content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: 3rem;
+    border-radius: 1.5rem;
+  }
+
+  .hero-3d__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-3d__eyebrow-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-secondary);
+    box-shadow: 0 0 10px var(--color-accent-secondary);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--color-accent-secondary); }
+    50% { opacity: 0.5; box-shadow: 0 0 20px var(--color-accent-secondary); }
+  }
+
+  .hero-3d__heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 1.5rem;
+  }
+
+  .hero-3d__subheading {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.6);
+    margin: 0 0 2rem;
+  }
+
+  .hero-3d__cta-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-3d {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    font-family: var(--font-body-family);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-3d--primary {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+  }
+
+  .btn-3d--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6);
+  }
+
+  .btn-3d--ghost {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    backdrop-filter: blur(10px);
+  }
+
+  .btn-3d--ghost:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .hero-3d__scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .scroll-hint__mouse {
+    width: 24px;
+    height: 36px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+  }
+
+  .scroll-hint__wheel {
+    width: 3px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    animation: scroll-wheel 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scroll-wheel {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(10px); }
+  }
+
+  @media (max-width: 768px) {
+    .hero-3d {
+      padding: 6rem 1.5rem 4rem;
+    }
+    .hero-3d__content {
+      padding: 2rem 1.5rem;
+    }
+    .hero-3d__model-wrap {
+      justify-content: center;
+      padding-right: 0;
+    }
+    .hero-3d__model {
+      width: 100%;
+      opacity: 0.5;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero — 3D Immersive",
+  "tag": "section",
+  "class": "section-hero-3d",
+  "settings": [
+    {
+      "type": "url",
+      "id": "model_3d_url",
+      "label": "3D Model URL (.glb)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fallback Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Touch. Feel. Experience."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Primary CTA Text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "default": true,
+      "label": "Full viewport height"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll",
+      "default": true,
+      "label": "Show scroll hint"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero — 3D Immersive",
+      "settings": {
+        "heading": "Touch. Feel.\nExperience.",
+        "eyebrow": "Next-Gen 3D Commerce",
+        "subheading": "Let your customers explore products in stunning 3D. Rotate, zoom, and interact — all from your browser.",
+        "cta_text": "Explore in 3D",
+        "cta_link": "/collections/all"
+      }
+    }
+  ]
+}
+{% endschema %}

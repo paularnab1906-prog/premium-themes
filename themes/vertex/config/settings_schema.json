@@ -1,0 +1,132 @@
+[
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "default": "#0a0a14",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "default": "#e8e8f0",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "default": "#7c3aed",
+        "label": "Accent / Purple"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_secondary",
+        "default": "#0ea5e9",
+        "label": "Accent Secondary / Teal"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "default": "#111120",
+        "label": "Secondary Background"
+      },
+      {
+        "type": "color",
+        "id": "color_glass",
+        "default": "rgba(255,255,255,0.06)",
+        "label": "Glass Surface"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "default": "rgba(255,255,255,0.1)",
+        "label": "Border"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "default": "space_grotesk",
+        "label": "Heading Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "default": "dm_sans",
+        "label": "Body Font"
+      },
+      {
+        "type": "range",
+        "id": "type_base_size",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "default": 16,
+        "unit": "px",
+        "label": "Base font size"
+      }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Animation Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "default": true,
+        "label": "Enable scroll animations"
+      },
+      {
+        "type": "range",
+        "id": "animation_speed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.1,
+        "default": 1,
+        "label": "Animation speed multiplier"
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social Media"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter / X"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok"
+      }
+    ]
+  }
+]

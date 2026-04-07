@@ -1,0 +1,9 @@
+{
+  "name": "Vertex Header Group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "current": {
+    "colors_solid_button_labels": "#ffffff",
+    "colors_accent": "#c9a96e",
+    "colors_text": "#f5f5f5",
+    "colors_background_1": "#0a0a0a",
+    "colors_background_2": "#1a1a2e",
+    "colors_lines": "#2a2a3a",
+    "type_header_font": "playfair_display",
+    "type_body_font": "inter",
+    "type_base_size": 16,
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {}
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "menu": "footer"
+        }
+      }
+    }
+  }
+}

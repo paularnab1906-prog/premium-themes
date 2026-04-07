@@ -1,0 +1,11 @@
+<title>{% if template == '404' %}Page Not Found{% else %}{{ page_title | escape }}{% endif %}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
+<meta property="og:title" content="{% if template == '404' %}Page Not Found{% else %}{{ page_title | escape }}{% endif %}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:site_name" content="{{ shop.name }}">
+{% if template == 'product' %}
+  <meta property="og:type" content="product">
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+{% else %}
+  <meta property="og:type" content="website">
+{% endif %}

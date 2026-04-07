@@ -1,0 +1,48 @@
+<div class="editorial-collection-header container">
+  <div class="editorial-collection-header__inner">
+    <span class="editorial-label" data-animate>{{ collection.title | escape }}</span>
+    <span class="editorial-rule" data-animate data-animate-line></span>
+    <h1 class="editorial-collection-header__title" data-animate>{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="editorial-collection-header__description" data-animate>{{ collection.description }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .editorial-collection-header {
+    padding: 8rem var(--gutter) 4rem;
+  }
+
+  .editorial-collection-header__inner {
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .editorial-collection-header__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .editorial-collection-header__description {
+    font-size: 0.9rem;
+    color: rgba(26,26,26,0.5);
+    max-width: 500px;
+    line-height: 1.7;
+    margin: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Header"
+}
+{% endschema %}

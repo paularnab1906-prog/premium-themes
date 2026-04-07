@@ -1,0 +1,22 @@
+{
+  "preset": {
+    "name": "Lumina Cinematic",
+    "schema": [
+      {
+        "name": "Colors",
+        "settings": {
+          "color_background": "#0a0a0a",
+          "color_text": "#f5f5f5",
+          "color_accent": "#c9a96e"
+        }
+      },
+      {
+        "name": "Typography",
+        "settings": {
+          "font_heading": "playfair_display",
+          "font_body": "inter"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-cinematic",
+      "settings": {
+        "full_height": true,
+        "overlay_opacity": 55,
+        "text_alignment": "center",
+        "heading": "A New Dimension of Style",
+        "eyebrow": "Spring / Summer 2026",
+        "subheading": "Experience fashion like never before — immersive, cinematic, unforgettable.",
+        "cta_text": "Explore Collection",
+        "cta_link": "/collections/all"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Our Collection",
+        "subheading": "Curated pieces that define the season.",
+        "products_to_show": 4,
+        "columns": 4,
+        "cta_text": "View All Products",
+        "cta_link": "/collections/all"
+      }
+    },
+    "video-banner-1": {
+      "type": "video-banner",
+      "settings": {
+        "heading": "The Art of Craftsmanship",
+        "text": "Every piece tells a story. Discover our latest collection, where heritage meets modern design.",
+        "cta_text": "Discover More",
+        "cta_link": "/collections/all",
+        "layout": "left"
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Designed for the Discerning",
+        "text": "We believe that every brand deserves a storefront as remarkable as their products. Lumina was built for brands that refuse to blend in — those who understand that the experience of discovery is as important as the product itself.",
+        "text_alignment": "center"
+      }
+    }
+  },
+  "order": ["hero", "featured-collection", "video-banner-1", "rich-text"]
+}

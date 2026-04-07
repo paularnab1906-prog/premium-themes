@@ -1,0 +1,18 @@
+{
+  "current": {
+    "colors_solid_button_labels": "#faf9f7",
+    "colors_accent": "#8b0000",
+    "colors_navy": "#1b2a4a",
+    "colors_text": "#1a1a1a",
+    "colors_background_1": "#faf9f7",
+    "colors_background_2": "#f0ece6",
+    "colors_lines": "#e0dbd4",
+    "type_header_font": "garamond_premrm_pro",
+    "type_body_font": "proxima_nova",
+    "type_base_size": 16,
+    "sections": {
+      "header": { "type": "header", "settings": {} },
+      "footer": { "type": "footer", "settings": {} }
+    }
+  }
+}

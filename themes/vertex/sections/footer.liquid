@@ -1,0 +1,191 @@
+<footer class="footer-3d">
+  <div class="footer-3d__inner">
+    <div class="footer-3d__brand">
+      <a href="{{ routes.root_url }}" class="footer-3d__logo">{{ shop.name }}</a>
+      <p class="footer-3d__tagline">{{ shop.description | default: 'Next-gen commerce experiences.' }}</p>
+      <div class="footer-3d__social">
+        {%- if settings.social_instagram_link != blank -%}
+          <a href="{{ settings.social_instagram_link }}" aria-label="Instagram" target="_blank">{% render 'icon-instagram' %}</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+          <a href="{{ settings.social_tiktok_link }}" aria-label="TikTok" target="_blank">{% render 'icon-tiktok' %}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="footer-3d__links">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_list' and block.settings.menu != blank -%}
+          <div class="footer-3d__column" {{ block.shopify_attributes }}>
+            <h3 class="footer-3d__heading">{{ block.settings.heading | default: block.settings.menu.title }}</h3>
+            <ul class="footer-3d__list">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}" class="footer-3d__link">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer-3d__bottom">
+      <p class="footer-3d__copyright">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.</p>
+      <div class="footer-3d__legal">
+        <a href="{{ routes.privacy_policy_url }}">Privacy</a>
+        <a href="{{ routes.terms_of_service_url }}">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-3d {
+    background: linear-gradient(180deg, transparent 0%, var(--color-secondary) 30%);
+    border-top: 1px solid var(--color-border);
+    padding: 5rem 3rem 2rem;
+  }
+
+  .footer-3d__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    gap: 3rem;
+  }
+
+  .footer-3d__logo {
+    font-family: var(--font-heading-family);
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-3d__tagline {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.4);
+    margin: 0 0 1.25rem;
+  }
+
+  .footer-3d__social {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .footer-3d__social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    background: var(--color-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    color: rgba(255,255,255,0.5);
+    transition: all 0.2s;
+  }
+
+  .footer-3d__social a:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .footer-3d__links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-3d__heading {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent-secondary);
+    margin: 0 0 1rem;
+  }
+
+  .footer-3d__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-3d__link {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-3d__link:hover {
+    color: #ffffff;
+  }
+
+  .footer-3d__bottom {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-3d__copyright {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    margin: 0;
+  }
+
+  .footer-3d__legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-3d__legal a {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-3d__legal a:hover {
+    color: rgba(255,255,255,0.7);
+  }
+
+  @media (max-width: 768px) {
+    .footer-3d {
+      padding: 3rem 1.5rem 1.5rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer — 3D",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link List",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer — 3D"
+    }
+  ]
+}
+{% endschema %}

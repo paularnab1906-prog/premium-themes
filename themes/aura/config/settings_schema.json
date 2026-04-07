@@ -1,0 +1,124 @@
+[
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "default": "#faf9f7",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "default": "#1a1a1a",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "default": "#8b0000",
+        "label": "Accent / Crimson"
+      },
+      {
+        "type": "color",
+        "id": "color_navy",
+        "default": "#1b2a4a",
+        "label": "Navy"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "default": "#f0ece6",
+        "label": "Secondary Background"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "default": "#e0dbd4",
+        "label": "Border"
+      },
+      {
+        "type": "color",
+        "id": "color_inverse_bg",
+        "default": "#1b2a4a",
+        "label": "Inverse Background (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "color_inverse_text",
+        "default": "#faf9f7",
+        "label": "Inverse Text"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "default": "garamond_premr_pro",
+        "label": "Heading Font (Serif)"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "default": "proxima_nova",
+        "label": "Body Font (Sans)"
+      },
+      {
+        "type": "range",
+        "id": "type_base_size",
+        "min": 13,
+        "max": 18,
+        "step": 1,
+        "default": 16,
+        "unit": "px",
+        "label": "Base font size"
+      }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Animation"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "default": true,
+        "label": "Enable scroll animations"
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social Media"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest"
+      }
+    ]
+  }
+]

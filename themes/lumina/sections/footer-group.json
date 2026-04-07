@@ -1,0 +1,9 @@
+{
+  "name": "Footer Group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  }
+}

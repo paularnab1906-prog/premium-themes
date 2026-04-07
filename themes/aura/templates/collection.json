@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "collection-header": {
+      "type": "collection-header",
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {}
+    }
+  },
+  "order": ["collection-header", "featured-collection"]
+}

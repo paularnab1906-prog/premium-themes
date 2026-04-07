@@ -1,0 +1,428 @@
+<section class="product-3d-section" data-section-id="{{ section.id }}" data-product-id="{{ product.id }}">
+  <div class="product-3d-section__inner">
+    <div class="product-3d-section__viewer">
+      {%- assign featured_media = product.featured_media -%}
+      {%- assign model_media = null -%}
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'model' -%}
+          {%- assign model_media = media -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <div class="product-3d-section__media-wrap glass" data-animate data-animate-scale>
+        {%- if model_media != blank -%}
+          <model-viewer
+            src="{{ model_media | model_viewer_source }}"
+            alt="{{ model_media.alt | escape }}"
+            auto-rotate
+            camera-controls
+            shadow-intensity="1"
+            class="product-3d-section__model-viewer"
+            data-shopify-model
+          >
+            <button class="product-3d-section__ar-btn" slot="ar-button">
+              {% render 'icon-ar' %}
+              <span>View in Your Space</span>
+            </button>
+          </model-viewer>
+        {%- elsif featured_media != blank -%}
+          <img
+            src="{{ featured_media | image_url: width: 900 }}"
+            alt="{{ featured_media.alt | escape }}"
+            class="product-3d-section__image"
+            loading="eager"
+          >
+        {%- endif -%}
+
+        <div class="product-3d-section__badge">
+          {% render 'icon-3d' %}
+          <span>Interactive 3D</span>
+        </div>
+      </div>
+
+      {%- if product.media.size > 1 -%}
+        <div class="product-3d-section__thumbs">
+          {%- for media in product.media -%}
+            <button
+              class="product-3d-section__thumb{% if media == featured_media %} is-active{% endif %}"
+              data-media-type="{{ media.media_type }}"
+              data-media-src="{% if media.media_type == 'model' %}{{ media | model_viewer_source }}{% else %}{{ media | image_url: width: 300 }}{% endif %}"
+              aria-label="{{ media.alt | escape }}"
+            >
+              {%- if media.media_type == 'model' -%}
+                {% render 'icon-3d' %}
+              {%- else -%}
+                <img src="{{ media | image_url: width: 100 }}" alt="{{ media.alt | escape }}" loading="lazy">
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="product-3d-section__info" data-animate data-animate-fade>
+      <p class="product-3d-section__vendor">{{ product.vendor }}</p>
+      <h1 class="product-3d-section__title">{{ product.title | escape }}</h1>
+
+      <div class="product-3d-section__price">
+        <span class="product-3d-section__price-current">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="product-3d-section__price-compare">{{ product.compare_at_price | money }}</span>
+          <span class="product-3d-section__price-badge">Sale</span>
+        {%- endif -%}
+      </div>
+
+      {%- form 'product', product, id: 'product-form-3d', class: 'product-form-3d' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div class="product-form-3d__option">
+              <label class="product-form-3d__option-label">{{ option.name }}</label>
+              <div class="product-form-3d__option-values">
+                {%- for value in option.values -%}
+                  <button
+                    type="button"
+                    class="product-form-3d__option-value{% if option.selected_value == value %} is-selected{% endif %}"
+                    data-option-name="{{ option.name }}"
+                    data-option-value="{{ value }}"
+                  >{{ value }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="product-form-3d__actions">
+          <div class="product-form-3d__qty">
+            <button type="button" class="qty-btn qty-btn--minus" aria-label="Decrease">-</button>
+            <input type="number" name="quantity" value="1" min="1" class="qty-input">
+            <button type="button" class="qty-btn qty-btn--plus" aria-label="Increase">+</button>
+          </div>
+          <button
+            type="submit"
+            class="product-form-3d__submit"
+            {% unless product.available %}disabled{% endunless %}
+          >
+            {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+          </button>
+        </div>
+      {%- endform -%}
+
+      <div class="product-3d-section__trust glass">
+        <div class="trust-item">
+          {% render 'icon-truck' %}
+          <span>Free shipping on orders over $150</span>
+        </div>
+        <div class="trust-item">
+          {% render 'icon-rotate' %}
+          <span>30-day hassle-free returns</span>
+        </div>
+        <div class="trust-item">
+          {% render 'icon-shield' %}
+          <span>Secure checkout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-3d-section {
+    padding: 8rem 3rem 5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .product-3d-section__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .product-3d-section__media-wrap {
+    position: sticky;
+    top: 100px;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .product-3d-section__model-viewer {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+
+  .product-3d-section__ar-btn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+    border: none;
+    border-radius: 2rem;
+    color: #ffffff;
+    font-family: var(--font-body-family);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .product-3d-section__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--color-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-secondary);
+  }
+
+  .product-3d-section__thumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .product-3d-section__thumbs::-webkit-scrollbar { display: none; }
+
+  .product-3d-section__thumb {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    color: var(--color-accent-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-3d-section__thumb.is-active,
+  .product-3d-section__thumb:hover {
+    border-color: var(--color-accent);
+  }
+
+  .product-3d-section__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-3d-section__vendor {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent-secondary);
+    margin: 0 0 0.75rem;
+  }
+
+  .product-3d-section__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0 0 1.25rem;
+    line-height: 1.05;
+  }
+
+  .product-3d-section__price {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .product-3d-section__price-compare {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .product-3d-section__price-current {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .product-3d-section__price-badge {
+    padding: 0.3rem 0.6rem;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+    border-radius: 1rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .product-form-3d__option {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-form-3d__option-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.75rem;
+  }
+
+  .product-form-3d__option-values {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .product-form-3d__option-value {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body-family);
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .product-form-3d__option-value:hover,
+  .product-form-3d__option-value.is-selected {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(124, 58, 237, 0.1);
+  }
+
+  .product-form-3d__actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .product-form-3d__qty {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .qty-btn {
+    width: 36px;
+    height: 48px;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .qty-btn:hover {
+    background: rgba(255,255,255,0.05);
+  }
+
+  .qty-input {
+    width: 40px;
+    height: 48px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body-family);
+    font-size: 0.9rem;
+  }
+
+  .product-form-3d__submit {
+    flex: 1;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+    color: #ffffff;
+    font-family: var(--font-body-family);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+  }
+
+  .product-form-3d__submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6);
+  }
+
+  .product-form-3d__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .product-3d-section__trust {
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .trust-item svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-accent-secondary);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .product-3d-section {
+      grid-template-columns: 1fr;
+      padding: 6rem 1.5rem 4rem;
+    }
+    .product-3d-section__media-wrap {
+      position: static;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product — 3D"
+}
+{% endschema %}

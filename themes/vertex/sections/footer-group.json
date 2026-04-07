@@ -1,0 +1,9 @@
+{
+  "name": "Vertex Footer Group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  }
+}

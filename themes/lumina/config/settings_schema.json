@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "default": "#0a0a0a",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "default": "#f5f5f5",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "default": "#c9a96e",
+        "label": "Accent / Gold"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "default": "#1a1a2e",
+        "label": "Secondary Background"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "default": "#2a2a3a",
+        "label": "Border"
+      },
+      {
+        "type": "color",
+        "id": "color_overlay",
+        "default": "rgba(0,0,0,0.6)",
+        "label": "Image Overlay"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "default": "playfair_display",
+        "label": "Heading Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "default": "inter",
+        "label": "Body Font"
+      },
+      {
+        "type": "range",
+        "id": "type_base_size",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "default": 16,
+        "unit": "px",
+        "label": "Base font size"
+      }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Animation Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "default": true,
+        "label": "Enable scroll animations"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_parallax",
+        "default": true,
+        "label": "Enable parallax effects"
+      },
+      {
+        "type": "range",
+        "id": "animation_speed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.1,
+        "default": 1,
+        "label": "Animation speed multiplier"
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social Media"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok"
+      }
+    ]
+  }
+]

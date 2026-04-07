@@ -1,0 +1,9 @@
+{
+  "name": "Aura Footer Group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  }
+}

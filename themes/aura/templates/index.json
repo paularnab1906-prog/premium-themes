@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-editorial",
+      "settings": {
+        "layout": "standard",
+        "image_position": "right",
+        "eyebrow": "Spring 2026 Collection",
+        "heading": "The Art\nof Elegance",
+        "subheading": "Where timeless design meets contemporary vision. Discover a new chapter in luxury fashion.",
+        "cta_text": "Explore Collection",
+        "cta_link": "/collections/all",
+        "secondary_text": "No. 47 — Spring / Summer"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "The Collection",
+        "eyebrow_text": "New Arrivals",
+        "layout": "asymmetric",
+        "products_to_show": 5
+      }
+    },
+    "editorial-storytelling": {
+      "type": "editorial-storytelling",
+      "settings": {
+        "eyebrow": "Our Story",
+        "heading": "Crafted for Those Who Notice",
+        "text": "Every seam, every silhouette, every choice of fabric reflects a commitment to uncompromising quality.",
+        "quote": "Elegance is not about being noticed — it is about being remembered."
+      }
+    }
+  },
+  "order": ["hero", "featured-collection", "editorial-storytelling"]
+}

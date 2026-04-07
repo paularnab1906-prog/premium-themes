@@ -1,0 +1,9 @@
+{
+  "name": "Vertex",
+  "version": "1.0.0",
+  "credentials": {
+    "api_key": "your-api-key",
+    "secret": "your-app-secret"
+  },
+  "docs": "https://shopify.dev/themes"
+}

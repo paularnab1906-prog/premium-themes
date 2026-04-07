@@ -1,0 +1,46 @@
+<div class="collection-header collection-header--3d">
+  <div class="collection-header__inner">
+    <h1 class="collection-header__title" data-animate>{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="collection-header__description" data-animate>{{ collection.description }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .collection-header--3d {
+    padding: 8rem 3rem 4rem;
+    text-align: center;
+    background: linear-gradient(180deg, var(--color-secondary) 0%, var(--color-background) 100%);
+  }
+
+  .collection-header__inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .collection-header__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 1rem;
+  }
+
+  .collection-header__description {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.5);
+    margin: 0;
+    line-height: 1.7;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Header"
+}
+{% endschema %}

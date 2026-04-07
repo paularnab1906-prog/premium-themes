@@ -1,0 +1,437 @@
+{%- liquid
+  assign product = product
+  assign current_variant = product.selected_or_first_available_variant
+  assign on_sale = product.compare_at_price > product.price
+  assign images = product.images
+  assign featured_image = product.featured_media
+-%}
+
+<section class="editorial-product" data-section-id="{{ section.id }}" data-product-id="{{ product.id }}">
+  <div class="editorial-product__inner">
+    <div class="editorial-product__gallery">
+      <div class="editorial-product__main-image" data-animate data-animate-scale>
+        {%- if featured_image != blank -%}
+          <img
+            src="{{ featured_image | image_url: width: 900 }}"
+            alt="{{ featured_image.alt | escape }}"
+            class="editorial-product__main-img"
+            id="ProductPhotoImg"
+            loading="eager"
+          >
+        {%- endif -%}
+
+        {%- if on_sale -%}
+          <div class="editorial-product__sale-badge">Sale</div>
+        {%- endif -%}
+      </div>
+
+      {%- if images.size > 1 -%}
+        <div class="editorial-product__thumbs">
+          {%- for image in images -%}
+            <button
+              class="editorial-product__thumb{% if image == featured_image %} is-active{% endif %}"
+              data-image-src="{{ image | image_url: width: 900 }}"
+              aria-label="{{ image.alt | escape }}"
+            >
+              <img
+                src="{{ image | image_url: width: 120 }}"
+                alt="{{ image.alt | escape }}"
+                loading="lazy"
+              >
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="editorial-product__info" data-animate data-animate-fade>
+      {%- if section.settings.show_vendor and product.vendor != blank -%}
+        <p class="editorial-product__vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+
+      <h1 class="editorial-product__title">{{ product.title | escape }}</h1>
+
+      <div class="editorial-product__price-row">
+        {%- if on_sale -%}
+          <span class="editorial-product__price-compare">{{ product.compare_at_price | money }}</span>
+          <span class="editorial-product__price-current">{{ product.price | money }}</span>
+        {%- else -%}
+          <span class="editorial-product__price-current">{{ product.price | money }}</span>
+        {%- endif -%}
+      </div>
+
+      <div class="editorial-product__divider">
+        <span class="editorial-rule"></span>
+      </div>
+
+      {%- form 'product', product, id: 'product-form-editorial', class: 'editorial-product-form' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div class="editorial-product-form__option">
+              <label class="editorial-product-form__option-label">
+                {{ option.name }}
+                <span class="editorial-product-form__option-selected">{{ option.selected_value }}</span>
+              </label>
+              <div class="editorial-product-form__option-values">
+                {%- for value in option.values -%}
+                  <button
+                    type="button"
+                    class="editorial-product-form__option-value{% if option.selected_value == value %} is-selected{% endif %}"
+                    data-option-name="{{ option.name }}"
+                    data-option-value="{{ value }}"
+                  >{{ value }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="editorial-product-form__actions">
+          <button
+            type="submit"
+            class="editorial-product-form__submit"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            {% if current_variant.available %}Add to Bag{% else %}Sold Out{% endif %}
+          </button>
+        </div>
+      {%- endform -%}
+
+      {%- if section.settings.show_description -%}
+        <div class="editorial-product__description" data-animate>
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+
+      <div class="editorial-product__details" data-animate>
+        <details class="editorial-product__detail-item">
+          <summary class="editorial-product__detail-summary">Shipping & Returns</summary>
+          <div class="editorial-product__detail-content">
+            <p>Complimentary shipping on orders over $150. Standard delivery 3-5 business days. Easy returns within 30 days of purchase.</p>
+          </div>
+        </details>
+        <details class="editorial-product__detail-item">
+          <summary class="editorial-product__detail-summary">Care Instructions</summary>
+          <div class="editorial-product__detail-content">
+            <p>Dry clean only. Store in a cool, dry place. Avoid direct sunlight to preserve fabric quality.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .editorial-product {
+    padding: 8rem var(--gutter) 5rem;
+    max-width: var(--container-max);
+    margin: 0 auto;
+  }
+
+  .editorial-product__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .editorial-product__gallery {
+    position: sticky;
+    top: 100px;
+  }
+
+  .editorial-product__main-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 2 / 3;
+    background: var(--color-secondary);
+  }
+
+  .editorial-product__main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .editorial-product__main-image:hover .editorial-product__main-img {
+    transform: scale(1.03);
+  }
+
+  .editorial-product__sale-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .editorial-product__thumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .editorial-product__thumbs::-webkit-scrollbar { display: none; }
+
+  .editorial-product__thumb {
+    flex-shrink: 0;
+    width: 64px;
+    height: 80px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .editorial-product__thumb.is-active,
+  .editorial-product__thumb:hover {
+    border-color: var(--color-text);
+  }
+
+  .editorial-product__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .editorial-product__vendor {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 0.5rem;
+  }
+
+  .editorial-product__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+  }
+
+  .editorial-product__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .editorial-product__price-compare {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: rgba(26,26,26,0.3);
+  }
+
+  .editorial-product__price-current {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .editorial-product__divider {
+    margin-bottom: 1.5rem;
+  }
+
+  .editorial-product-form__option {
+    margin-bottom: 1.5rem;
+  }
+
+  .editorial-product-form__option-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.4);
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+  }
+
+  .editorial-product-form__option-selected {
+    color: var(--color-text);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .editorial-product-form__option-values {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .editorial-product-form__option-value {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body-family);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .editorial-product-form__option-value:hover,
+  .editorial-product-form__option-value.is-selected {
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .editorial-product-form__submit {
+    width: 100%;
+    padding: 1.25rem;
+    background: var(--color-text);
+    color: var(--color-background);
+    font-family: var(--font-body-family);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    margin-top: 0.5rem;
+  }
+
+  .editorial-product-form__submit:hover:not(:disabled) {
+    background: var(--color-navy);
+  }
+
+  .editorial-product-form__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .editorial-product__description {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(26,26,26,0.6);
+  }
+
+  .editorial-product__details {
+    margin-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .editorial-product__detail-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .editorial-product__detail-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.6);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .editorial-product__detail-summary::-webkit-details-marker { display: none; }
+
+  .editorial-product__detail-summary::after {
+    content: '+';
+    font-size: 1rem;
+    color: var(--color-text);
+  }
+
+  details[open] .editorial-product__detail-summary::after {
+    content: '-';
+  }
+
+  .editorial-product__detail-content {
+    padding: 0 0 1rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: rgba(26,26,26,0.6);
+  }
+
+  @media (max-width: 900px) {
+    .editorial-product__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .editorial-product {
+      padding: 6rem var(--gutter) 4rem;
+    }
+    .editorial-product__gallery {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.editorial-product-form__option-value').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var name = this.dataset.optionName;
+        var value = this.dataset.optionValue;
+        var form = this.closest('.editorial-product-form');
+        form.querySelectorAll('.editorial-product-form__option-value').forEach(function(b) {
+          if (b.dataset.optionName === name) {
+            b.classList.remove('is-selected');
+            var label = form.querySelector('[data-option-name="' + name + '"]').closest('.editorial-product-form__option').querySelector('.editorial-product-form__option-selected');
+            if (label) label.textContent = '';
+          }
+        });
+        this.classList.add('is-selected');
+        var selectedLabel = form.querySelector('[data-option-name="' + name + '"]').closest('.editorial-product-form__option').querySelector('.editorial-product-form__option-selected');
+        if (selectedLabel) selectedLabel.textContent = value;
+      });
+    });
+
+    document.querySelectorAll('.editorial-product__thumb').forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        var mainImg = document.getElementById('ProductPhotoImg');
+        if (mainImg) mainImg.src = this.dataset.imageSrc;
+        document.querySelectorAll('.editorial-product__thumb').forEach(function(t) { t.classList.remove('is-active'); });
+        this.classList.add('is-active');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product — Editorial",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": true,
+      "label": "Show description"
+    }
+  ]
+}
+{% endschema %}

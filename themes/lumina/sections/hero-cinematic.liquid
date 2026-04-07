@@ -1,0 +1,406 @@
+{%- liquid
+  assign video_url = section.settings.video_url
+  assign image = section.settings.image
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign cta_text = section.settings.cta_text
+  assign cta_link = section.settings.cta_link
+  assign overlay_opacity = section.settings.overlay_opacity | default: 60
+  assign text_alignment = section.settings.text_alignment
+  assign full_height = section.settings.full_height
+-%}
+
+<section
+  class="hero-cinematic{% if full_height %} hero-cinematic--full{% endif %}"
+  data-section-id="{{ section.id }}"
+  data-enable-parallax="{{ settings.enable_parallax }}"
+>
+  {%- if video_url != blank -%}
+    <video
+      class="hero-cinematic__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="{{ image | image_url: width: 1920 }}"
+    >
+      {%- if video_url.type == 'youtube' -%}
+        <source src="https://www.youtube.com/embed/{{ video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ video_url.id }}" type="video/youtube">
+      {%- elsif video_url.type == 'vimeo' -%}
+        <source src="https://player.vimeo.com/video/{{ video_url.id }}?autoplay=1&muted=1&loop=1&background=1" type="video/vimeo">
+      {%- else -%}
+        <source src="{{ video_url }}" type="video/mp4">
+      {%- endif -%}
+    </video>
+  {%- elsif image != blank -%}
+    <div class="hero-cinematic__image-wrap">
+      <img
+        src="{{ image | image_url: width: 1920 }}"
+        alt="{{ image.alt | escape }}"
+        class="hero-cinematic__image"
+        loading="eager"
+        fetchpriority="high"
+        width="1920"
+        height="1080"
+      >
+    </div>
+  {%- endif -%}
+
+  <div class="hero-cinematic__overlay" style="opacity: {{ overlay_opacity | divided_by: 100.0 }};"></div>
+
+  <div class="hero-cinematic__content hero-cinematic__content--{{ text_alignment }}">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="hero-cinematic__eyebrow" data-animate data-animate-fade>{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    {%- if heading != blank -%}
+      <h1 class="hero-cinematic__heading" data-animate data-animate-fade>
+        {{ heading | newline_to_br }}
+      </h1>
+    {%- endif -%}
+
+    {%- if subheading != blank -%}
+      <p class="hero-cinematic__subheading" data-animate data-animate-fade>{{ subheading }}</p>
+    {%- endif -%}
+
+    {%- if cta_text != blank and cta_link != blank -%}
+      <div class="hero-cinematic__cta" data-animate data-animate-fade>
+        <a href="{{ cta_link }}" class="btn btn--primary">
+          {{ cta_text }}
+          <span class="btn__arrow">{% render 'icon-arrow-right' %}</span>
+        </a>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.secondary_cta_text != blank -%}
+      <div class="hero-cinematic__secondary-cta" data-animate data-animate-fade>
+        <a href="{{ section.settings.secondary_cta_link }}" class="btn btn--outline">
+          {{ section.settings.secondary_cta_text }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="hero-cinematic__scroll-indicator" aria-hidden="true">
+    <span class="scroll-indicator__line"></span>
+    <span class="scroll-indicator__text">Scroll</span>
+  </div>
+</section>
+
+<style>
+  .hero-cinematic {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+    overflow: hidden;
+    background-color: var(--color-background);
+  }
+
+  .hero-cinematic--full {
+    min-height: 100vh;
+  }
+
+  .hero-cinematic__video,
+  .hero-cinematic__image-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-cinematic__image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    transition: transform 8s ease-out;
+  }
+
+  .hero-cinematic:hover .hero-cinematic__image-wrap img {
+    transform: scale(1);
+  }
+
+  .hero-cinematic__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.3) 0%,
+      rgba(10, 10, 10, 0.6) 50%,
+      rgba(10, 10, 10, 0.9) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-cinematic__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .hero-cinematic__content--left {
+    text-align: left;
+    margin-right: auto;
+    padding-left: clamp(2rem, 8vw, 8rem);
+  }
+
+  .hero-cinematic__content--right {
+    text-align: right;
+    margin-left: auto;
+    padding-right: clamp(2rem, 8vw, 8rem);
+  }
+
+  .hero-cinematic__eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 1.5rem;
+  }
+
+  .hero-cinematic__heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  }
+
+  .hero-cinematic__subheading {
+    font-family: var(--font-body-family);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    color: rgba(255,255,255,0.8);
+    margin: 0 0 2.5rem;
+    max-width: 560px;
+  }
+
+  .hero-cinematic__content--center .hero-cinematic__subheading {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cinematic__cta,
+  .hero-cinematic__secondary-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-cinematic__content--left .hero-cinematic__cta,
+  .hero-cinematic__content--left .hero-cinematic__secondary-cta {
+    justify-content: flex-start;
+  }
+
+  .hero-cinematic__content--right .hero-cinematic__cta,
+  .hero-cinematic__content--right .hero-cinematic__secondary-cta {
+    justify-content: flex-end;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body-family);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn--primary {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  .btn--primary:hover {
+    background-color: #d4b87a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 169, 110, 0.3);
+  }
+
+  .btn--outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  .btn--outline:hover {
+    border-color: #ffffff;
+    background-color: rgba(255,255,255,0.08);
+  }
+
+  .btn__arrow {
+    display: flex;
+    transition: transform 0.3s ease;
+  }
+
+  .btn:hover .btn__arrow {
+    transform: translateX(4px);
+  }
+
+  .hero-cinematic__scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .scroll-indicator__line {
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--color-accent), transparent);
+    animation: scroll-line 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator__text {
+    font-size: 0.625rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  @keyframes scroll-line {
+    0% { opacity: 1; transform: scaleY(1) translateY(0); }
+    50% { opacity: 0.5; transform: scaleY(0.5) translateY(15px); }
+    100% { opacity: 1; transform: scaleY(1) translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .hero-cinematic {
+      min-height: 80vh;
+    }
+    .hero-cinematic__content {
+      padding: 2rem 1.5rem;
+    }
+    .hero-cinematic__content--left,
+    .hero-cinematic__content--right {
+      text-align: center;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .hero-cinematic__content--left .hero-cinematic__cta,
+    .hero-cinematic__content--right .hero-cinematic__cta {
+      justify-content: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero — Cinematic",
+  "tag": "section",
+  "class": "section-hero-cinematic",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Background Video URL",
+      "accept": ["youtube", "vimeo"],
+      "placeholder": "https://www.youtube.com/watch?v=..."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A New Dimension of Style"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Primary CTA Text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA Link"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 60,
+      "label": "Overlay Opacity"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "default": true,
+      "label": "Full viewport height"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero — Cinematic",
+      "settings": {
+        "heading": "A New Dimension of Style",
+        "subheading": "Experience fashion like never before — immersive, cinematic, unforgettable.",
+        "cta_text": "Explore Collection",
+        "cta_link": "/collections/all",
+        "eyebrow": "Spring / Summer 2026",
+        "overlay_opacity": 55
+      }
+    }
+  ]
+}
+{% endschema %}

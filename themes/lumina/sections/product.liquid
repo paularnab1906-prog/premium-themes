@@ -1,0 +1,458 @@
+{%- liquid
+  assign product = product
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = product.featured_media
+  assign media_group = product.media | where: "media_type", "image"
+  assign on_sale = product.compare_at_price > product.price
+-%}
+
+<section class="product-section" data-section-id="{{ section.id }}" data-product-id="{{ product.id }}">
+  <div class="product-section__gallery">
+    <div class="product-gallery">
+      {%- if featured_media != blank -%}
+        <div class="product-gallery__main" data-gallery-main>
+          <img
+            src="{{ featured_media | image_url: width: 900 }}"
+            alt="{{ featured_media.alt | escape }}"
+            class="product-gallery__image"
+            id="ProductPhotoImg"
+            loading="eager"
+            fetchpriority="high"
+            width="900"
+            height="{{ 900 | times: featured_media.aspect_ratio | round }}"
+          >
+          {%- if on_sale -%}
+            <span class="product-gallery__badge product-gallery__badge--sale">Sale</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if media_group.size > 1 -%}
+        <div class="product-gallery__thumbs">
+          {%- for media in media_group -%}
+            <button
+              class="product-gallery__thumb{% if media == featured_media %} is-active{% endif %}"
+              data-image-id="{{ media.id }}"
+              data-image-url="{{ media | image_url: width: 900 }}"
+              aria-label="{{ media.alt | escape }}"
+            >
+              <img
+                src="{{ media | image_url: width: 150 }}"
+                alt="{{ media.alt | escape }}"
+                width="150"
+                loading="lazy"
+              >
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-section__info">
+    <h1 class="product-section__title">{{ product.title | escape }}</h1>
+
+    {%- if section.settings.show_vendor and product.vendor != blank -%}
+      <p class="product-section__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+
+    <div class="product-section__price" data-price>
+      {%- if on_sale -%}
+        <span class="product-section__price-compare">{{ product.compare_at_price | money }}</span>
+        <span class="product-section__price-current">{{ product.price | money }}</span>
+        <span class="product-section__price-badge">On Sale</span>
+      {%- else -%}
+        <span class="product-section__price-current">{{ product.price | money }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- form 'product', product, id: 'product-form', class: 'product-form' -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <div class="product-form__option">
+            <label class="product-form__option-label">{{ option.name }}</label>
+            <div class="product-form__option-values">
+              {%- for value in option.values -%}
+                <button
+                  type="button"
+                  class="product-form__option-value{% if option.selected_value == value %} is-selected{% endif %}"
+                  data-option-name="{{ option.name }}"
+                  data-option-value="{{ value }}"
+                >
+                  {{ value }}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <div class="product-form__quantity">
+        <label class="visually-hidden" for="Quantity">Quantity</label>
+        <input
+          type="number"
+          id="Quantity"
+          name="quantity"
+          value="1"
+          min="1"
+          class="quantity-input"
+        >
+      </div>
+
+      <div class="product-form__actions">
+        <button
+          type="submit"
+          name="add"
+          class="product-form__submit"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          <span>{% if current_variant.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+        </button>
+      </div>
+    {%- endform -%}
+
+    {%- if section.settings.show_description -%}
+      <div class="product-section__description" data-animate>
+        {{ product.description }}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_details -%}
+      <div class="product-section__details" data-animate>
+        <div class="product-detail-item">
+          <span class="product-detail-item__icon">{% render 'icon-bag' %}</span>
+          <div>
+            <strong>Free Shipping</strong>
+            <p>On orders over $150</p>
+          </div>
+        </div>
+        <div class="product-detail-item">
+          <span class="product-detail-item__icon">{% render 'icon-bag' %}</span>
+          <div>
+            <strong>Easy Returns</strong>
+            <p>30-day return policy</p>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .product-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 6rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .product-gallery {
+    position: sticky;
+    top: 100px;
+  }
+
+  .product-gallery__main {
+    position: relative;
+    background: var(--color-secondary);
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .product-gallery__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .product-gallery__main:hover .product-gallery__image {
+    transform: scale(1.03);
+  }
+
+  .product-gallery__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  .product-gallery__thumbs {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .product-gallery__thumbs::-webkit-scrollbar { display: none; }
+
+  .product-gallery__thumb {
+    flex-shrink: 0;
+    width: 80px;
+    height: 100px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    background: none;
+    padding: 0;
+  }
+
+  .product-gallery__thumb.is-active,
+  .product-gallery__thumb:hover {
+    border-color: var(--color-accent);
+  }
+
+  .product-gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-section__info {
+    padding-top: 1rem;
+  }
+
+  .product-section__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+    line-height: 1.1;
+  }
+
+  .product-section__vendor {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 1.25rem;
+  }
+
+  .product-section__price {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .product-section__price-compare {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .product-section__price-current {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .product-section__price-badge {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--color-accent);
+    color: var(--color-background);
+    padding: 0.3rem 0.6rem;
+  }
+
+  .product-form__option {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-form__option-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 0.75rem;
+  }
+
+  .product-form__option-values {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .product-form__option-value {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-family: var(--font-body-family);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: none;
+  }
+
+  .product-form__option-value:hover,
+  .product-form__option-value.is-selected {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .quantity-input {
+    width: 80px;
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  .product-form__submit {
+    width: 100%;
+    padding: 1.25rem;
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    font-family: var(--font-body-family);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    margin-top: 1.5rem;
+  }
+
+  .product-form__submit:hover:not(:disabled) {
+    background-color: #d4b87a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 169, 110, 0.3);
+  }
+
+  .product-form__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .product-section__description {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .product-section__details {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .product-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .product-detail-item__icon {
+    color: var(--color-accent);
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .product-detail-item strong {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .product-detail-item p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  @media (max-width: 900px) {
+    .product-section {
+      grid-template-columns: 1fr;
+      padding: 5rem 1.5rem;
+      gap: 2rem;
+    }
+    .product-gallery {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Option selector
+    document.querySelectorAll('.product-form__option-value').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var name = this.dataset.optionName;
+        var value = this.dataset.optionValue;
+        var form = this.closest('.product-form');
+
+        form.querySelectorAll('.product-form__option-value').forEach(function(b) {
+          if (b.dataset.optionName === name) {
+            b.classList.remove('is-selected');
+          }
+        });
+        this.classList.add('is-selected');
+      });
+    });
+
+    // Gallery thumbs
+    document.querySelectorAll('.product-gallery__thumb').forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        var mainImg = document.getElementById('ProductPhotoImg');
+        mainImg.src = this.dataset.imageUrl;
+
+        document.querySelectorAll('.product-gallery__thumb').forEach(function(t) {
+          t.classList.remove('is-active');
+        });
+        this.classList.add('is-active');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": true,
+      "label": "Show description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_details",
+      "default": true,
+      "label": "Show trust details"
+    }
+  ]
+}
+{% endschema %}

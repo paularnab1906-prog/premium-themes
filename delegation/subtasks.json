@@ -1,0 +1,29 @@
+[
+  {
+    "id": "CEO-DEL-001-A",
+    "parentId": "CEO-DEL-001",
+    "title": "Draft delegation protocol",
+    "content": "Draft triage workflow, routing rules, escalation paths. Align with HEARTBEAT and SOUL; define event types and when to escalate.",
+    "owner": "CTO",
+    "status": "pending",
+    "priority": "high"
+  },
+  {
+    "id": "CEO-DEL-001-B",
+    "parentId": "CEO-DEL-001",
+    "title": "Design delegation dashboard (optional)",
+    "content": "If applicable, design a lightweight dashboard for task delegation status accessible to execs.",
+    "owner": "UXDesigner",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "CEO-DEL-001-C",
+    "parentId": "CEO-DEL-001",
+    "title": "Assess need for dedicated delegation agent",
+    "content": "Evaluate whether a dedicated agent (paperclip-create-agent) is needed to manage delegation tasks and routing.",
+    "owner": "CTO",
+    "status": "pending",
+    "priority": "low"
+  }
+]

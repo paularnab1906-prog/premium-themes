@@ -1,0 +1,12 @@
+{
+  "name": "Aura",
+  "version": "1.0.0",
+  "credentials": {
+    "api_key": "your-api-key",
+    "secret": "your-app-secret"
+  },
+  "docs": "https://shopify.dev/themes",
+  "platform_requirements": {
+    "online_store_2_0": true
+  }
+}

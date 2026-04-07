@@ -1,0 +1,13 @@
+{
+  "name": "Lumina Theme Group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {}
+    }
+  }
+}

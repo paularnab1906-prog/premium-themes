@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "collection-header": {
+      "type": "collection-header",
+      "settings": {}
+    },
+    "product-grid": {
+      "type": "product-grid",
+      "settings": {
+        "columns": 3
+      }
+    }
+  },
+  "order": ["collection-header", "product-grid"]
+}

@@ -1,0 +1,74 @@
+{%- liquid
+  assign columns = section.settings.columns | default: 3
+  assign products_per_page = section.settings.products_per_page | default: 12
+-%}
+
+<div class="product-grid" style="--columns: {{ columns }};" data-section-id="{{ section.id }}">
+  {%- for product in collection.products limit: products_per_page -%}
+    <div class="product-grid__item stagger-{{ forloop.index | modulo: 6 }}" data-animate>
+      {% render 'product-card', product: product %}
+    </div>
+  {%- else -%}
+    {%- for i in (1..columns) -%}
+      <div class="product-card product-card--placeholder" data-animate>
+        <div class="product-card__media">
+          <div class="product-card__image-placeholder"></div>
+        </div>
+        <div class="product-card__info">
+          <p class="product-card__vendor">Sample Brand</p>
+          <h3 class="product-card__title">Product Name</h3>
+          <p class="product-card__price">$149.00</p>
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endfor -%}
+</div>
+
+<style>
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: 2rem;
+    padding: 2rem 3rem 6rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+      padding: 1.5rem 1.5rem 4rem;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "default": 3,
+      "label": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 48,
+      "default": 12,
+      "label": "Products per page"
+    }
+  ]
+}
+{% endschema %}

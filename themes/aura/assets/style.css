@@ -1,0 +1,73 @@
+/* ============================================
+   AURA — Editorial Shopify Theme
+   High-fashion aesthetic (Celine, Fendi, LV inspired)
+   ============================================ */
+
+*, *::before, *::after { box-sizing: inherit; }
+
+html { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--color-accent);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  z-index: 9999;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.skip-link:focus { top: 0; }
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+main { min-height: 60vh; }
+
+/* Selection */
+::selection {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--color-secondary); }
+::-webkit-scrollbar-thumb { background: var(--color-accent); }
+
+/* Focus */
+:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading-family);
+  line-height: 1.05;
+}
+
+p { line-height: 1.7; }
+a { color: inherit; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}

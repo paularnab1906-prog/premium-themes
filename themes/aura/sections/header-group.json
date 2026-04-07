@@ -1,0 +1,9 @@
+{
+  "name": "Aura Header Group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    }
+  }
+}
